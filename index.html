@@ -29,24 +29,16 @@
 
       function submitTime() {
         const hour = document.getElementById("hourSelect").value;
-        const contactId = getQueryParam("contact_id");
 
         if (!hour) {
           alert("Wybierz godzinę!");
           return;
         }
 
-        if (!contactId) {
-          alert(
-            "Brak contact_id – nie mogę powiązać rezerwacji z użytkownikiem."
-          );
-          return;
-        }
-
         // Wysyłka do webhooka Make.com
         const url = `https://hook.eu1.make.com/wfz62qrtbkavrjinhcz5ta9zb9pefqh6?hour=${encodeURIComponent(
           hour
-        )}&contact_id=${encodeURIComponent(contactId)}`;
+        )}`;
 
         // Przekierowanie (Make odbierze request GET)
         window.location.href = url;
