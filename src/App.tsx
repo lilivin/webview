@@ -42,14 +42,20 @@ function App() {
     mode: "onChange",
   });
 
+  // Get subscriberId from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const subscriberId = urlParams.get("subscriberId");
+
   const onSubmit = (data: FormData) => {
     const url = `https://hook.eu1.make.com/wfz62qrtbkavrjinhcz5ta9zb9pefqh6?hour=${encodeURIComponent(
       data.time
-    )}&date=${encodeURIComponent(data.date.toISOString())}`;
+    )}&date=${encodeURIComponent(
+      data.date.toISOString()
+    )}&subscriberId=${encodeURIComponent(subscriberId || "")}`;
 
     fetch(url)
       .then(() => {
-        setTimeout(() => window.close(), 300); // zamknięcie po user interaction
+        setTimeout(() => window.close(), 300);
       })
       .catch(() => {
         alert("Nie udało się wysłać rezerwacji.");
