@@ -47,10 +47,14 @@ function App() {
   const subscriberId = urlParams.get("subscriberId");
 
   const onSubmit = (data: FormData) => {
-    const url = `https://hook.eu1.make.com/wfz62qrtbkavrjinhcz5ta9zb9pefqh6?hour=${encodeURIComponent(
-      data.time
-    )}&date=${encodeURIComponent(
-      data.date.toISOString().split("T")[0]
+    // Combine date and time into a single datetime string
+    const dateObj = new Date(data.date);
+    const [hours, minutes] = data.time.split(":");
+    dateObj.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0);
+    const datetime = dateObj.toISOString();
+
+    const url = `https://hook.eu1.make.com/wfz62qrtbkavrjinhcz5ta9zb9pefqh6?datetime=${encodeURIComponent(
+      datetime
     )}&subscriberId=${encodeURIComponent(subscriberId || "")}`;
 
     fetch(url)
