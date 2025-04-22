@@ -50,7 +50,7 @@ function App() {
     const url = `https://hook.eu1.make.com/wfz62qrtbkavrjinhcz5ta9zb9pefqh6?hour=${encodeURIComponent(
       data.time
     )}&date=${encodeURIComponent(
-      data.date.toISOString()
+      data.date.toISOString().split("T")[0]
     )}&subscriberId=${encodeURIComponent(subscriberId || "")}`;
 
     fetch(url)
