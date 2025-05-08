@@ -38,6 +38,7 @@ const MONTHS = [
 function App() {
   const [value, onChange] = useState<Value>(null);
   const [selectedTime, setSelectedTime] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const { handleSubmit, setValue } = useForm<FormData>({
     mode: "onChange",
   });
@@ -59,7 +60,15 @@ function App() {
 
     fetch(url)
       .then(() => {
-        setTimeout(() => window.close(), 300);
+        // Try to close window for browsers that support it
+        try {
+          setTimeout(() => window.close(), 300);
+
+          // Instead of trying to close window, show success message
+          setIsSubmitted(true);
+        } catch {
+          // Silently fail if window.close() is not supported
+        }
       })
       .catch(() => {
         alert("Nie udało się wysłać rezerwacji.");
@@ -99,6 +108,16 @@ function App() {
     setSelectedTime(time);
     setValue("time", time, { shouldValidate: true });
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="success-message">
+        <img src={logo} alt="Restaurant Logo" className="logo" />
+        <h2>Dziękujemy za złożenie rezerwacji!</h2>
+        <p>Jesli okno nie zamknie sie automatycznie, zamknij je recznie i powróć do konwersacji, zeby potwierdzić rezerwacje.</p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
